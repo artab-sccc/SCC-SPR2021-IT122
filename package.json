@@ -1,0 +1,19 @@
+{
+  "name": "it122",
+  "version": "1.0.0",
+  "description": "This is my IT122 Node app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/artab-sccc/SCC-SPR2021-IT122.git"
+  },
+  "author": "arthur tabadero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/artab-sccc/SCC-SPR2021-IT122/issues"
+  },
+  "homepage": "https://github.com/artab-sccc/SCC-SPR2021-IT122#readme"
+}
