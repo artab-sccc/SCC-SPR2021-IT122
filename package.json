@@ -15,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/artab-sccc/SCC-SPR2021-IT122/issues"
   },
-  "homepage": "https://github.com/artab-sccc/SCC-SPR2021-IT122#readme"
+  "homepage": "https://github.com/artab-sccc/SCC-SPR2021-IT122#readme",
+  "type": "module"
 }

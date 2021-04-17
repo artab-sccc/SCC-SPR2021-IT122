@@ -4,7 +4,7 @@ http.createServer((req,res) => {
 
     var path = req.url.toLowerCase();
     switch(path) {
-        case '/':
+        case '/': 
             res.writeHead(200, {'Content-Type': 'text/plain'});
             res.end('This is the Home Page!');
             break;
