@@ -1,0 +1,6 @@
+<h1>Hello! This is home page!</h1>
+    <h2>Select a Pokemon below for more details!</h2>
+
+    {{#each pokemons}}
+        <li><a href="/details?name={{name}}">{{name}}</li>
+    {{/each}}
