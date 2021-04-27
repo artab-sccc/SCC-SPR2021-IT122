@@ -15,9 +15,6 @@
   "bugs": {
     "url": "https://github.com/artab-sccc/SCC-SPR2021-IT122/issues"
   },
-<<<<<<< Updated upstream
-  "homepage": "https://github.com/artab-sccc/SCC-SPR2021-IT122#readme"
-=======
   "homepage": "https://github.com/artab-sccc/SCC-SPR2021-IT122#readme",
   "type": "module",
   "dependencies": {
@@ -30,5 +27,4 @@
     "mocha": "^8.3.2",
     "nodemon": "^2.0.7"
   }
->>>>>>> Stashed changes
 }

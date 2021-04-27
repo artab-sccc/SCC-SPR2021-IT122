@@ -1,0 +1,36 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #203647;
+    color: #EEFBFB;
+}
+
+a:link {
+    color: #4DA8DA;
+}
+
+a:visited {
+    color: #4DA8DA;
+}
+
+#wrapper {
+    clear: both;
+    width: 940px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid white;
+}
+
+main {
+    width: 580px;
+    margin-top: 5px;
+    margin: 0 auto;
+}
+
+h1, h2, p {
+    margin-bottom: 10px;
+}
