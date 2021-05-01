@@ -1,7 +1,5 @@
-import { read } from 'fs';
-import http from 'http';
+
 import * as pokemon from './data.js';
-import qs from 'querystring';
 import express from 'express';
 import handlebars from 'express-handlebars';
 

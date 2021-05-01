@@ -16,4 +16,28 @@ const getItem = (name) => {
     });
 }
 
-export { getAll, getItem, pokemons };
+const addItem = (newPokemon) => {
+    let newItem = getItem(newPokemon.name);
+    let msg = "";
+    if (!newItem) {
+        pokemons.push(newPokemon);
+        msg = newPokemon.name + " has been added.";
+    } else {
+        msg = newPokemon.name + " already exists!";
+    };
+    return {result: msg};
+};
+
+const deleteItem = (delPokemon) => {
+    let toDelete = getItem(delPokemon.name);
+    let msg = "";
+    if (toDelete) {
+        pokemons.splice(pokemons.indexOf(toDelete), 1);
+        msg = delPokemon.name + " has been deleted.";
+    } else {
+        msg = delPokemon.name + " does not exist!";
+    };
+    return {result: msg};
+}
+
+export { getAll, getItem, addItem, deleteItem, pokemons };
