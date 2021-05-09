@@ -1,5 +1,6 @@
 
 import * as pokemon from './data.js';
+import { Pokemon } from './models/pokemons.js';
 import express from 'express';
 import handlebars from 'express-handlebars';
 
@@ -14,8 +15,11 @@ app.engine('hbs', handlebars({defaultLayout: "main.hbs"}));
 app.set("view engine", "hbs");
 
 // Render default home page
-app.get('/', (req, res) => {
-    res.render('home', {pokemons: pokemon.getAll()});
+app.get('/', (req, res, next) => {
+    Pokemon.find({}).lean()
+        .then((pokemons) => {
+            res.render('home', {pokemons})
+    }).catch(err => next(err));
 });
 
 // Render About page
@@ -25,10 +29,24 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/details', (req, res) => {
-    let result = pokemon.getItem(req.query.name);
-    let details = JSON.stringify(result);
-    res.render('details', {name: req.query.name, result: result, details: details});
+    Pokemon.findOne({"name": req.query.name}).lean()
+        .then((pokemons) => {
+            res.render('details', {result: pokemons});
+         }).catch(err => next(err));
 });
+
+app.get('/delete', (req, res) => {
+    Pokemon.deleteOne({"name": req.query.name}, (error, result) =>{
+        if (result.deletedCount == 0 || error) {
+            console.log(error);
+            console.log("Delete unsuccessful!");
+            res.send("Cannot delete! " + req.query.name + " does not exist!");
+        } else {
+            res.send(req.query.name + " has been deleted!");
+            console.log("Delete successful!");
+        }
+        });
+    });
 
 // Render 404 handler
 app.use((req,res) => {
