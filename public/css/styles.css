@@ -34,3 +34,7 @@ main {
 h1, h2, p {
     margin-bottom: 10px;
 }
+
+ul {
+    margin-left: 15px;
+}

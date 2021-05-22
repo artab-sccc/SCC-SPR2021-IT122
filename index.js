@@ -20,7 +20,8 @@ app.set("view engine", "hbs");
 app.get('/', (req, res, next) => {
     Pokemon.find({}).lean()
         .then((pokemons) => {
-            res.render('home', {pokemons})
+//            res.render('home', {pokemons})
+            res.render('home', {pokemons: JSON.stringify(pokemons)});
     }).catch(err => next(err));
 });
 
