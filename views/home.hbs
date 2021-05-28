@@ -12,13 +12,63 @@
     const pokemons = {{{pokemons}}}
 
     const Pokemon = (props) => {
-        const listItems = pokemons.map((item) => <li key={item._id}><a href={"/details?name="+item.name}>{item.name}</a></li>)
+        const listItems = pokemons.map((item) => 
+            <li key={item._id} onClick={props.clickHandler}>
+                {{!-- <a href={"/details?name="+item.name}> --}}
+                {item.name}
+                {{!-- </a> --}}
+                </li>)
         return <ul>{listItems}</ul>
     }
 
+    // App to render on page
+    class PokemonApp extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                items: {{{pokemons}}},
+                currentItem: {}
+            };
+            this.selectItem = this.selectItem.bind(this);
+        }
+
+        {{!-- Click Handler event --}}
+        selectItem = (event) => {
+            console.log(event.target)
+            const find = this.state.items.find((item) => {
+                return item.name === event.target.innerText;
+
+            });
+            this.setState({currentItem: find})
+        }   
+
+        render () {
+            return (
+                <div>
+                    <Pokemon data={this.state.items} clickHandler={this.selectItem} />
+                    <ItemDetail item={this.state.currentItem} />
+                </div>
+            );
+        }
+    }
+
+    {{!-- Shows info about Pokemon when clicked --}}
+    const ItemDetail = (props) => {
+        return <div>
+            <hr />
+                <h3>Pokemon Details</h3>
+                {props.item.name && <ul>
+                    <li>Name: {props.item.name}</li>
+                    <li>Type: {props.item.type}</li>
+                    <li>Species: {props.item.species}</li>
+                    <li>Region: {props.item.region}</li>
+                </ul>
+                }
+        </div>
+    }
+
     ReactDOM.render(
-        <div><Pokemon /></div>,
-        document.getElementById('root')
+        <div><PokemonApp /></div>, document.getElementById('root')
     );
 
 </script>

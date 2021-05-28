@@ -31,10 +31,14 @@ main {
     margin: 0 auto;
 }
 
-h1, h2, p {
+h1, h2, h3, p {
     margin-bottom: 10px;
 }
 
 ul {
     margin-left: 15px;
+}
+
+hr {
+    margin: 15px 0 15px 0;
 }
