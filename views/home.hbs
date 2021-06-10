@@ -12,15 +12,31 @@
     const pokemons = {{{pokemons}}}
 
     const Pokemon = (props) => {
-        const listItems = pokemons.map((item) => 
-            <li key={item._id} onClick={props.clickHandler}>
-                {{!-- <a href={"/details?name="+item.name}> --}}
+        const listItems = props.data.map((item) => 
+            <li key={item._id} id={item.id} onClick={props.clickHandler}>
                 {item.name}
-                {{!-- </a> --}}
-                </li>)
+                </li>);
         return <ul>{listItems}</ul>
     }
 
+    {{!-- Shows info about Pokemon when clicked --}}
+    const ItemDetail = (props) => {
+        return <div>
+            <hr />
+                <h3>Pokemon Details</h3>
+                <form>
+                    Name: <input type="text" name="name" value={props.item.name || ""} onChange={props.handleChange} /><br />
+                    Type: <input type="text" name="type" value={props.item.type || ""} onChange={props.handleChange} /><br />
+                    Species: <input type="text" name="species" value={props.item.species || ""} onChange={props.handleChange} /><br />
+                    Region: <input type="text" name="region" value={props.item.region || ""} onChange={props.handleChange} /><br />
+                </form>
+                <button name="clear" onClick={props.clearForm}>Clear</button>
+                <button name="save" onClick={props.saveItem}>Save</button>
+                <button name="delete" onClick={props.deleteItem}>Delete</button>            
+                
+        </div>
+    }
+    
     // App to render on page
     class PokemonApp extends React.Component {
         constructor(props) {
@@ -30,6 +46,10 @@
                 currentItem: {}
             };
             this.selectItem = this.selectItem.bind(this);
+            this.handleChange = this.handleChange.bind(this);
+            this.clearForm = this.clearForm.bind(this);
+            this.saveItem = this.saveItem.bind(this);
+            this.deleteItem = this.deleteItem.bind(this);
         }
 
         {{!-- Click Handler event --}}
@@ -42,29 +62,71 @@
             this.setState({currentItem: find})
         }   
 
+        handleChange = (event) => {
+            console.log(event.target)
+            let newItem = this.state.currentItem;
+            newItem[event.target.name] = event.target.value;
+            this.setState({value: newItem});
+        }
+
+        clearForm = () => {
+            this.setState({currentItem: {}});
+        }
+
+        saveItem = () => {
+            console.log(this.state.currentItem)
+            if (this.state.currentItem == {}) return 
+
+            let newItem = this.state.currentItem;
+
+            fetch('/api/pokemons/update', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(this.state.currentItem)
+            }).then(res => res.json())
+            .then((json) => {
+                console.log(json)
+                if (json.updated === 0) {
+                    newItem._id = json._id;
+                    let newList = this.state.items;
+                    newList.push(newItem);
+                    this.setState({items: newList});
+                }
+                
+                });
+        }
+        
+        deleteItem = () => {
+            if (this.state.currentItem == {}) return
+
+            let deleteId = this.state.currentItem._id
+
+            let url = "/api/pokemons/delete/"+deleteId;
+
+            fetch(url)
+            .then(res => res.json())
+            .then((json) => { 
+                console.log(json)
+                if (json.deleted.deletedCount > 0) {
+                    let newList = this.state.items.filter(item => {
+                        return item._id != deleteId;
+                    })
+                    this.setState({items: newList, currentItem: {}})
+                }
+            })
+        }
+
+                  
+        
+
         render () {
             return (
                 <div>
                     <Pokemon data={this.state.items} clickHandler={this.selectItem} />
-                    <ItemDetail item={this.state.currentItem} />
+                    <ItemDetail item={this.state.currentItem} handleChange={this.handleChange} clearForm={this.clearForm} saveItem={this.saveItem} deleteItem={this.deleteItem} />
                 </div>
             );
         }
-    }
-
-    {{!-- Shows info about Pokemon when clicked --}}
-    const ItemDetail = (props) => {
-        return <div>
-            <hr />
-                <h3>Pokemon Details</h3>
-                {props.item.name && <ul>
-                    <li>Name: {props.item.name}</li>
-                    <li>Type: {props.item.type}</li>
-                    <li>Species: {props.item.species}</li>
-                    <li>Region: {props.item.region}</li>
-                </ul>
-                }
-        </div>
     }
 
     ReactDOM.render(

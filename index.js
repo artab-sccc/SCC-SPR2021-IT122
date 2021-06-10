@@ -48,7 +48,7 @@ app.get('/delete', (req, res) => {
             res.send("Cannot delete! " + req.query.name + " does not exist!");
         } else {
             res.send(req.query.name + " has been deleted!");
-            console.log("Delete successful!");
+            console.log("Delete successful!?");
         }
         });
     });
@@ -97,19 +97,47 @@ app.post('/api/pokemons/add', (req, res, next) => {
             }});
 });
 
-// Delete a Pokemon from database
-app.get('/api/pokemons/delete/:name', (req, res, next) => {
-    Pokemon.deleteOne({"name": req.params.name}, (error, result) =>{
-        if (result.deletedCount == 0 || error) {
-            console.log(error);
-            console.log("Delete unsuccessful!");
-            res.status(500).send("Cannot delete! " + req.params.name + " does not exist!");
-        } else {
-            res.json({"message": req.params.name + " has been deleted!"});
-            console.log("Delete successful!");
-        }
+app.post('/api/pokemons/update', (req, res, next) => {
+    if (!req.body._id) {
+        let newPokemon = new Pokemon(req.body);
+        newPokemon.save((err, newPoke) => {
+            if (err) return next(err);
+            res.json({updated: 0, _id: newPoke._id});
         });
+    } else {
+        Pokemon.updateOne({ _id: req.body._id}, {name: req.body.name,
+        type: req.body.type, species: req.body.species, region: req.body.region},
+        (err, result) => {
+            if(err) return next(err);
+            res.json({updated: result.nModified, _id: req.body._id});
+        });
+    }
+})
+
+// Delete a Pokemon from database by name
+// app.get('/api/pokemons/delete/:name', (req, res, next) => {
+//     Pokemon.deleteOne({"name": req.params.name}, (error, result) =>{
+//         if (result.deletedCount == 0 || error) {
+//             console.log(error);
+//             console.log("Delete unsuccessful!");
+//             res.status(500).send("Cannot delete! " + req.params.name + " does not exist!");
+//         } else {
+//             res.json({"message": req.params.name + " has been deleted!"});
+//             console.log("Darn, delete successful!");
+//         }
+//         });
+//     });
+
+// Delete a Pokemon from database by ID
+app.get('/api/pokemons/delete/:id', (req, res, next) => {
+    Pokemon.deleteOne({"_id":req.params.id}, (err, result) => {
+        if (err) return next(err);
+        res.json({"deleted": result});
     });
+});
+
+
+
 
 
 // Render 404 handler
